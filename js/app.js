@@ -43,16 +43,16 @@ let notificationPopup = null;
 const Utils = {
     formatTime: function(secs) {
         const minutes = Math.floor(secs / 60);
-        let secondsRemainder = secs - (minutes * 60);
-        if (secondsRemainder < 10) {
-            secondsRemainder = "0" + secondsRemainder;
+        let seconds = secs - (minutes * 60);
+        if (seconds < 10) {
+            seconds = "0" + seconds;
         }
-        return minutes + ":" + secondsRemainder;
+        return minutes + ":" + seconds;
     },
 
     convertTemp: function(degree, temperature) {
         const degreeType = degree.symbol;
-        const dashPosition = temperature.search('-');
+        const dashPosition = temperature.indexOf('-');
         
         const convert = (tempString, degree) => {
             const val = parseInt(tempString);
@@ -60,7 +60,7 @@ const Utils = {
         };
 
         if (degreeType !== 'C') {
-            if (dashPosition > 0) {
+            if (dashPosition !== -1) {
                 const temp1 = temperature.substring(0, dashPosition);
                 const temp2 = temperature.substring(dashPosition + 1);
                 return convert(temp1, degree) + ' - ' + convert(temp2, degree);
@@ -208,7 +208,7 @@ function tick() {
         document.getElementById('countdownBar').style.width = percentage + '%';
         
         state.timer = setTimeout(tick, 1000);
-    } else if (state.actualTime <= 0 && state.timerRunning) {
+    } else if (state.actualTime === 0 && state.timerRunning) {
         // Display notification before stopping timer
         Notification.display('Tea-clock', 'Your tea is ready!');
         stopTimer();
