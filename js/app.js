@@ -43,16 +43,16 @@ let notificationPopup = null;
 const Utils = {
     formatTime: function(secs) {
         const minutes = Math.floor(secs / 60);
-        let secs_remainder = secs - (minutes * 60);
-        if (secs_remainder < 10) {
-            secs_remainder = "0" + secs_remainder;
+        let secondsRemainder = secs - (minutes * 60);
+        if (secondsRemainder < 10) {
+            secondsRemainder = "0" + secondsRemainder;
         }
-        return minutes + ":" + secs_remainder;
+        return minutes + ":" + secondsRemainder;
     },
 
     convertTemp: function(degree, temperature) {
         const degreeType = degree.symbol;
-        const tempIntervPos = temperature.search('-');
+        const dashPosition = temperature.search('-');
         
         const convert = (tempString, degree) => {
             const val = parseInt(tempString);
@@ -60,9 +60,9 @@ const Utils = {
         };
 
         if (degreeType !== 'C') {
-            if (tempIntervPos > 0) {
-                const temp1 = temperature.substring(0, tempIntervPos);
-                const temp2 = temperature.substring(tempIntervPos + 1);
+            if (dashPosition > 0) {
+                const temp1 = temperature.substring(0, dashPosition);
+                const temp2 = temperature.substring(dashPosition + 1);
                 return convert(temp1, degree) + ' - ' + convert(temp2, degree);
             } else {
                 return convert(temperature, degree).toString();
@@ -208,14 +208,11 @@ function tick() {
         document.getElementById('countdownBar').style.width = percentage + '%';
         
         state.timer = setTimeout(tick, 1000);
-    } else if (state.actualTime <= 0) {
+    } else if (state.actualTime <= 0 && state.timerRunning) {
+        // Display notification before stopping timer
+        Notification.display('Tea-clock', 'Your tea is ready!');
         stopTimer();
         resetTitle();
-        
-        // Display notification
-        if (state.timerRunning) {
-            Notification.display('Tea-clock', 'Your tea is ready!');
-        }
     }
 }
 
