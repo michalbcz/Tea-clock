@@ -41,7 +41,7 @@ let notificationPopup = null;
 
 // Utils
 const Utils = {
-    formatTime: function(secs) {
+    formatTime: (secs) => {
         const minutes = Math.floor(secs / 60);
         let seconds = secs - (minutes * 60);
         if (seconds < 10) {
@@ -50,7 +50,7 @@ const Utils = {
         return minutes + ":" + seconds;
     },
 
-    convertTemp: function(degree, temperature) {
+    convertTemp: (degree, temperature) => {
         const degreeType = degree.symbol;
         // All tea temperatures are positive, so dash is always a range separator
         const dashPosition = temperature.indexOf('-');
@@ -73,7 +73,8 @@ const Utils = {
         }
     },
 
-    gaTrack: function(tea, degree, time) {
+    gaTrack: (tea, degree, time) => {
+        // Google Analytics global queue variable
         if (typeof _gaq !== 'undefined') {
             _gaq.push(['_trackEvent', 'start-tea', tea]);
             _gaq.push(['_trackEvent', 'degree', degree]);
@@ -160,7 +161,7 @@ function updateInfoPanel() {
     document.getElementById('displayTime').textContent = Utils.formatTime(state.time);
     
     const convertedTemp = Utils.convertTemp(state.chosenDegree, state.selectedTea.temp);
-    document.getElementById('displayTemp').textContent = convertedTemp + ' °' + state.chosenDegree.symbol;
+    document.getElementById('displayTemp').textContent = `${convertedTemp} °${state.chosenDegree.symbol}`;
 }
 
 function updateTimeInput() {
@@ -168,7 +169,7 @@ function updateTimeInput() {
 }
 
 function updateTitle(time) {
-    document.title = "[" + Utils.formatTime(time) + "] Tea-clock";
+    document.title = `[${Utils.formatTime(time)}] Tea-clock`;
 }
 
 function resetTitle() {
@@ -206,7 +207,7 @@ function tick() {
         // Update modal
         document.getElementById('modalTime').textContent = Utils.formatTime(state.actualTime);
         const percentage = (state.actualTime / state.time) * 100;
-        document.getElementById('countdownBar').style.width = percentage + '%';
+        document.getElementById('countdownBar').style.width = `${percentage}%`;
         
         state.timer = setTimeout(tick, 1000);
     } else if (state.actualTime === 0 && state.timerRunning) {
