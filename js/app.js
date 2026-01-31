@@ -265,7 +265,7 @@ function onTimeChange() {
     let minutes = parseInt(minutesInput.value, 10) || 0;
     let seconds = parseInt(secondsInput.value, 10) || 0;
     
-    // Validate and cap minutes (max 16 minutes = 960 seconds, leaving room for up to 999 total)
+    // Validate and cap minutes at 16 (allows total up to 999 seconds with proper seconds value)
     if (minutes < 0) minutes = 0;
     if (minutes > 16) {
         minutes = 16;
