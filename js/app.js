@@ -53,10 +53,11 @@ const Utils = {
     convertTemp: (degree, temperature) => {
         const degreeType = degree.symbol;
         // All tea temperatures are positive, so dash is always a range separator
+        // Temperature format: "65 - 70" or "99" (parseInt handles whitespace automatically)
         const dashPosition = temperature.indexOf('-');
         
         const convert = (tempString, degree) => {
-            const val = parseInt(tempString, 10);
+            const val = parseInt(tempString.trim(), 10);
             return degree.formula(val);
         };
 
@@ -74,11 +75,11 @@ const Utils = {
     },
 
     gaTrack: (tea, degree, time) => {
-        // Google Analytics global queue variable
-        if (typeof _gaq !== 'undefined') {
-            _gaq.push(['_trackEvent', 'start-tea', tea]);
-            _gaq.push(['_trackEvent', 'degree', degree]);
-            _gaq.push(['_trackEvent', 'start-time', time]);
+        // Google Analytics global queue variable (legacy pattern)
+        if (typeof window._gaq !== 'undefined') {
+            window._gaq.push(['_trackEvent', 'start-tea', tea]);
+            window._gaq.push(['_trackEvent', 'degree', degree]);
+            window._gaq.push(['_trackEvent', 'start-time', time]);
         }
     }
 };
@@ -259,8 +260,14 @@ function onTimeChange() {
     const timeInput = document.getElementById('timeInput');
     const newTime = parseInt(timeInput.value, 10);
     
-    if (!isNaN(newTime) && newTime > 0) {
+    // Validate time is within acceptable range
+    if (!isNaN(newTime) && newTime > 0 && newTime <= 999) {
         state.time = newTime;
+        updateInfoPanel();
+    } else if (newTime > 999) {
+        // Cap at max value
+        timeInput.value = 999;
+        state.time = 999;
         updateInfoPanel();
     }
 }
