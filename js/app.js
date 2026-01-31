@@ -159,14 +159,17 @@ function saveSelection() {
 // UI Update functions
 function updateInfoPanel() {
     document.getElementById('teaName').textContent = state.selectedTea.title;
-    document.getElementById('displayTime').textContent = Utils.formatTime(state.time);
+    updateTimeInputs();
     
     const convertedTemp = Utils.convertTemp(state.chosenDegree, state.selectedTea.temp);
     document.getElementById('displayTemp').textContent = `${convertedTemp} °${state.chosenDegree.symbol}`;
 }
 
-function updateTimeInput() {
-    document.getElementById('timeInput').value = state.time;
+function updateTimeInputs() {
+    const minutes = Math.floor(state.time / 60);
+    const seconds = state.time % 60;
+    document.getElementById('minutesInput').value = minutes;
+    document.getElementById('secondsInput').value = seconds;
 }
 
 function updateTitle(time) {
@@ -244,7 +247,6 @@ function onTeaChange() {
         state.selectedTea = tea;
         state.time = tea.time;
         updateInfoPanel();
-        updateTimeInput();
     }
 }
 
@@ -257,18 +259,42 @@ function onDegreeChange(degreeName) {
 }
 
 function onTimeChange() {
-    const timeInput = document.getElementById('timeInput');
-    const newTime = parseInt(timeInput.value, 10);
+    const minutesInput = document.getElementById('minutesInput');
+    const secondsInput = document.getElementById('secondsInput');
     
-    // Validate time is within acceptable range
-    if (!isNaN(newTime) && newTime > 0 && newTime <= 999) {
+    let minutes = parseInt(minutesInput.value, 10) || 0;
+    let seconds = parseInt(secondsInput.value, 10) || 0;
+    
+    // Validate and cap minutes (max 16 minutes = 960 seconds, leaving room for up to 999 total)
+    if (minutes < 0) minutes = 0;
+    if (minutes > 16) {
+        minutes = 16;
+        minutesInput.value = 16;
+    }
+    
+    // Validate and cap seconds
+    if (seconds < 0) seconds = 0;
+    if (seconds > 59) {
+        seconds = 59;
+        secondsInput.value = 59;
+    }
+    
+    // Calculate total time in seconds
+    const newTime = minutes * 60 + seconds;
+    
+    // Validate total time (must be at least 1 second and max 999)
+    if (newTime > 0 && newTime <= 999) {
         state.time = newTime;
-        updateInfoPanel();
     } else if (newTime > 999) {
-        // Cap at max value
-        timeInput.value = 999;
+        // Cap at 999 seconds (16:39)
         state.time = 999;
-        updateInfoPanel();
+        minutesInput.value = 16;
+        secondsInput.value = 39;
+    } else if (newTime === 0) {
+        // If both are 0, set to 1 second minimum
+        state.time = 1;
+        minutesInput.value = 0;
+        secondsInput.value = 1;
     }
 }
 
@@ -322,11 +348,11 @@ function init() {
     
     // Update UI
     updateInfoPanel();
-    updateTimeInput();
     
     // Set up event listeners
     teaSelect.addEventListener('change', onTeaChange);
-    document.getElementById('timeInput').addEventListener('input', onTimeChange);
+    document.getElementById('minutesInput').addEventListener('input', onTimeChange);
+    document.getElementById('secondsInput').addEventListener('input', onTimeChange);
     document.getElementById('steepButton').addEventListener('click', startTimer);
     document.getElementById('resetButton').addEventListener('click', stopTimer);
     

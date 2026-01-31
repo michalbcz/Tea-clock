@@ -35,34 +35,55 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="well">
-                <form id="form1" class="form-horizontal">
-                    <fieldset>
-                        <legend>How do you take your tea?</legend>
-                        <div class="form-group">
-                            <label class="control-label" for="teaSelect">Tea:</label>
-                            <div class="controls">
-                                <select id="teaSelect" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="timeInput">Time:</label>
-                            <div class="controls">
-                                <input type="number" id="timeInput" class="form-control" min="1" max="999" placeholder="Time in seconds">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Temperature Units:</label>
-                            <div class="btn-group controls" id="degreeButtons"></div>
-                        </div>
-                    </fieldset>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form id="form1" class="form-horizontal">
+                            <fieldset>
+                                <legend>How do you take your tea?</legend>
+                                <div class="form-group">
+                                    <label class="control-label" for="teaSelect">Tea:</label>
+                                    <div class="controls">
+                                        <select id="teaSelect" class="form-control"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Temperature Units:</label>
+                                    <div class="btn-group controls" id="degreeButtons"></div>
+                                </div>
+                            </fieldset>
 
-                    <div class="form-actions">
-                        <button class="btn btn-danger btn-lg" type="button" id="steepButton">
-                            <i class="glyphicon glyphicon-time icon-white"></i> <span>Steep</span></button>&nbsp;
+                            <div class="form-actions">
+                                <button class="btn btn-danger btn-lg" type="button" id="steepButton">
+                                    <i class="glyphicon glyphicon-time icon-white"></i> <span>Steep</span></button>&nbsp;
+                            </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="col-md-6" style="text-align:center">
+                        <br/>
+                        <div class="clearfix">
+                            <img src="img/icon_pruhledna.png"><br/><br/>
+                        </div>
+                        <div class="clearfix">
+                            <a href="#" class="btn btn-default btn-lg" id="teaName"></a>
+                        </div>
+                        <br><br>
+                        <div class="clearfix">
+                            <label style="font-size: 14px; font-weight: normal;">Time to steep the tea:</label><br/>
+                            <div style="display: inline-block;">
+                                <input type="number" id="minutesInput" class="form-control" min="0" max="16" placeholder="Min" style="width: 70px; display: inline-block; text-align: center;">
+                                <span style="font-size: 20px; font-weight: bold;">:</span>
+                                <input type="number" id="secondsInput" class="form-control" min="0" max="59" placeholder="Sec" style="width: 70px; display: inline-block; text-align: center;">
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="clearfix">
+                            <a href="#" class="btn btn-default btn-lg"><span id="displayTemp"></span></a><br>
+                            <small>Ideal temperature to steep the tea.</small>
+                        </div>
+                    </div>
+                </div>
                 <!-- modal(s) -->
                 <div class="modal fade" id="countdownModal" tabindex="-1" role="dialog" aria-labelledby="countdownLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -86,30 +107,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-md-4" style="text-align:center">
-            <div class="well">
-                <div class="clearfix">
-                    <img src="img/icon_pruhledna.png"><br/><br/>
                 </div>
-                <div class="clearfix">
-                    <a href="#" class="btn btn-default btn-lg" id="teaName"></a>
-                </div>
-                <br><br>
-                <div class="clearfix">
-                    <a href="#" class="btn btn-default btn-lg"><span id="displayTime"></span></a><br>
-                    <small>Time to steep the tea.</small>
-                </div>
-                <br><br>
-                <div class="clearfix">
-                    <a href="#" class="btn btn-default btn-lg"><span id="displayTemp"></span></a><br>
-                    <small>Ideal temperature to steep the tea.</small>
-                </div>
-            </div>
-        </div>
-    </div>
+                <!-- modal(s) -->
     <div class="row">
         <div class="col-md-12">
             <p>
