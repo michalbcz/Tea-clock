@@ -52,10 +52,11 @@ const Utils = {
 
     convertTemp: function(degree, temperature) {
         const degreeType = degree.symbol;
+        // All tea temperatures are positive, so dash is always a range separator
         const dashPosition = temperature.indexOf('-');
         
         const convert = (tempString, degree) => {
-            const val = parseInt(tempString);
+            const val = parseInt(tempString, 10);
             return degree.formula(val);
         };
 
@@ -141,7 +142,7 @@ function loadSelection() {
     }
 
     if (storedTimer) {
-        state.time = parseInt(storedTimer);
+        state.time = parseInt(storedTimer, 10);
     } else {
         state.time = state.selectedTea.time;
     }
@@ -255,7 +256,7 @@ function onDegreeChange(degreeName) {
 
 function onTimeChange() {
     const timeInput = document.getElementById('timeInput');
-    const newTime = parseInt(timeInput.value);
+    const newTime = parseInt(timeInput.value, 10);
     
     if (!isNaN(newTime) && newTime > 0) {
         state.time = newTime;
