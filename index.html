@@ -72,6 +72,7 @@
                         <div class="clearfix">
                             <label style="font-size: 14px; font-weight: normal;">Time to steep the tea:</label><br/>
                             <div style="display: inline-block;">
+                                <!-- HTML max="16" is a soft limit; JavaScript validation enforces 999 second total cap -->
                                 <input type="number" id="minutesInput" class="form-control" min="0" max="16" placeholder="Min" style="width: 70px; display: inline-block; text-align: center;">
                                 <span style="font-size: 20px; font-weight: bold;">:</span>
                                 <input type="number" id="secondsInput" class="form-control" min="0" max="59" placeholder="Sec" style="width: 70px; display: inline-block; text-align: center;">
